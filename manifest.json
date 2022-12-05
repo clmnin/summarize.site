@@ -1,0 +1,34 @@
+{
+  "name": "Summarize",
+  "description": "Summarize any article using OpenAI's ChatGPT",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "homepage_url": "https://summarize.site",
+  "action": {},
+  "permissions": [
+    "scripting",
+    "activeTab"
+  ],
+  "icons": {
+    "16": "logo.png",
+    "32": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
+  "host_permissions": [
+    "https://*.openai.com/"
+  ],
+  "background": {
+    "service_worker": "background.bundle.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "styles.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
