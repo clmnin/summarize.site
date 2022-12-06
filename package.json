@@ -1,6 +1,6 @@
 {
   "name": "summarize-gpt",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Summarize any article using OpenAI's ChatGPT",
   "author": "Clament John <cj@hackerlab.in>",
   "scripts": {
