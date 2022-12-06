@@ -199,7 +199,14 @@ async function run() {
   const innerContainer = container.querySelector(".summarize__content-inner-container");
   innerContainer.innerHTML = '<p class="loading">Waiting for ChatGPT response...</p>';
 
-  const content = getContentOfArticle();
+  let content;
+  let selection = window.getSelection();
+
+  if (selection.isCollapsed) {
+    content = getContentOfArticle();
+  } else {
+    content = selection.toString();
+  }
 
   const port = chrome.runtime.connect();
   port.onMessage.addListener(function (msg) {
