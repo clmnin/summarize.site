@@ -4,6 +4,11 @@ import { fetchSSE } from "./fetch-sse.js";
 
 const KEY_ACCESS_TOKEN = "accessToken";
 
+let prompt;
+chrome.storage.sync.get("prompt", function(items) {
+  prompt = items.prompt;
+});
+
 const cache = new ExpiryMap(10 * 1000);
 
 async function getAccessToken() {
@@ -85,7 +90,7 @@ chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(async (request, sender, sendResponse) => {
     console.debug("received msg ", request.content);
     try {
-      const gptQuestion = `Rewrite this for brevity, in outline form:\n\n${request.content}`;
+      const gptQuestion = prompt + `\n\n${request.content}`;
       await getSummary(gptQuestion, (answer) => {
         port.postMessage({ answer });
       });

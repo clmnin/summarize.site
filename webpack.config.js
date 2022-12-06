@@ -43,6 +43,8 @@ module.exports = {
         { from: 'public/res/logo.png', to: 'logo.png' },
         { from: 'public/res/logo-128.png', to: 'logo-128.png' },
         { from: 'public/styles.css', to: 'styles.css' },
+        { from: 'public/options.html', to: 'options.html' },
+        { from: 'public/options.js', to: 'options.js' },
       ],
     }),
     new CleanWebpackPlugin(),
