@@ -85,7 +85,7 @@ chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(async (request, sender, sendResponse) => {
     console.debug("received msg ", request.content);
     try {
-      const gptQuestion = `Give me the summary of:\n\n${request.content}`;
+      const gptQuestion = `Rewrite this for brevity, in outline form:\n\n${request.content}`;
       await getSummary(gptQuestion, (answer) => {
         port.postMessage({ answer });
       });
