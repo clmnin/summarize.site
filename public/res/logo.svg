@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" stroke="black" stroke-width="3" fill="grey" /><rect x="30" y="30" width="40" height="40" stroke="black" stroke-width="3" fill="white" /><circle cx="45" cy="45" r="10" stroke="black" stroke-width="3" fill="red" /><circle cx="55" cy="45" r="10" stroke="black" stroke-width="3" fill="red" /><line x1="45" y1="55" x2="55" y2="55" stroke="black" stroke-width="3" /></svg>

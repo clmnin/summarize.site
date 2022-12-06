@@ -2,7 +2,7 @@
 
 Browser Extension to summarize web page content using ChatGPT, support Chrome (more on the way!)
 
-![Screenshot](screenshot.png?raw=true)
+[![Watch the video](./public/screenshot.png)](https://www.youtube.com/watch?v=87IiZSrF9HI)
 
 ## Installation
 

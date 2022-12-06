@@ -3,7 +3,7 @@
   "description": "Summarize any article using OpenAI's ChatGPT",
   "version": "0.0.1",
   "manifest_version": 3,
-  "homepage_url": "https://summarize.site",
+  "homepage_url": "https://github.com/clmnin/summarize.site",
   "action": {},
   "permissions": [
     "scripting",
@@ -13,7 +13,7 @@
     "16": "logo.png",
     "32": "logo.png",
     "48": "logo.png",
-    "128": "logo.png"
+    "128": "logo-128.png"
   },
   "host_permissions": [
     "https://*.openai.com/"

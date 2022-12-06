@@ -39,9 +39,10 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: 'manifest.json', to: 'manifest.json' },
-        { from: 'logo.png', to: 'logo.png' },
-        { from: 'styles.css', to: 'styles.css' },
+        { from: 'public/manifest.json', to: 'manifest.json' },
+        { from: 'public/res/logo.png', to: 'logo.png' },
+        { from: 'public/res/logo-128.png', to: 'logo-128.png' },
+        { from: 'public/styles.css', to: 'styles.css' },
       ],
     }),
     new CleanWebpackPlugin(),

@@ -1,6 +1,6 @@
 import * as DOMPurify from 'dompurify';
 import html2md from 'html-to-md'
-import CrossIC from './cross.svg';
+import CrossIC from '../../public/res/cross.svg';
 
 // Check given item against blacklist, return null if in blacklist
 const blacklist = ["comment"];
