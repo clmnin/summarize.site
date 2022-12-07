@@ -28,6 +28,19 @@ https://chrome.google.com/webstore/detail/summarize/lmhkmibdclhibdooglianggbnhcb
 3. Run `yarn dev`
 4. Load the `build` directory to your browser
 
+## FAQ
+1. How do I translate this to my language of choice?
+    * You can change the `prompt` in the options page
+        * right click the extension in the toolbar
+        * choose `Options` from the drop down menu
+    * The following two configurations have been [tested for Chinese](https://github.com/clmnin/summarize.site/issues/3#issuecomment-1340885865):
+        * Rewrite this for brevity, translate into Chinese, in outline form:
+            * This directly summarizes the article in Chinese, outline form.
+        * Rewrite this for brevity, in outline form, Chinese translation:
+            * This summarizes the article in outline form in English, and adds a Chinese translation below.
+        <img src="https://user-images.githubusercontent.com/17064666/206191327-b0c63b9a-9356-476e-a7aa-087176714f0c.png" width="400" height="271">
+
+
 ## Credit
 
 This project is inspired by [wong2/chat-gpt-google-extension](https://github.com/wong2/chat-gpt-google-extension)
