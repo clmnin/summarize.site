@@ -4,9 +4,11 @@ import { fetchSSE } from "./fetch-sse.js";
 
 const KEY_ACCESS_TOKEN = "accessToken";
 
-let prompt;
-chrome.storage.sync.get("prompt", function(items) {
-  prompt = items.prompt;
+let prompt = "Rewrite this for brevity, in outline form:";
+chrome.storage.sync.get("prompt", function (items) {
+  if (items && items.prompt) {
+    prompt = items.prompt;
+  }
 });
 
 const cache = new ExpiryMap(10 * 1000);

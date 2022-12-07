@@ -1,4 +1,4 @@
-const defaultPrompt = "Give me the summary of:";
+const defaultPrompt = "Rewrite this for brevity, in outline form:";
 
 chrome.storage.sync.get("prompt", function (items) {
     if (items.prompt) {
