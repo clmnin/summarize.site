@@ -115,7 +115,7 @@
 }
 
 .summarize__content-inner-container .loading {
-  color: #b6b8ba;
+  color: var(--summarize-color-black);
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
@@ -135,5 +135,5 @@
   margin-bottom: 0px;
   line-height: 20px;
   background-color: var(--summarize-color-white);
-  color: var(--summarize-color-black)
+  color: var(--summarize-color-black);
 }

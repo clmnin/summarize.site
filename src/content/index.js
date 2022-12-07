@@ -211,11 +211,11 @@ async function run() {
   const port = chrome.runtime.connect();
   port.onMessage.addListener(function (msg) {
     if (msg.answer) {
-      innerContainer.innerHTML = '<p><span class="prefix">Summary by ChatGPT:</span><pre></pre></p>';
+      innerContainer.innerHTML = '<p><span class="prefix">Summarized </span> by <a href="https://chat.openai.com/chat" target="_blank">ChatGPT</a>:<pre></pre></p>';
       innerContainer.querySelector("pre").textContent = msg.answer;
     } else if (msg.error === "UNAUTHORIZED") {
       innerContainer.innerHTML =
-        '<p>Please login at <a href="https://chat.openai.com" target="_blank">chat.openai.com</a> first</p>';
+        '<p class="prefix">Please login at <a href="https://chat.openai.com" target="_blank">chat.openai.com</a> first</p>';
     } else {
       innerContainer.innerHTML = "<p>Failed to load response from ChatGPT</p>";
     }
