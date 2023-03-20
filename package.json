@@ -5,7 +5,7 @@
   "author": "Clament John <cj@hackerlab.in>",
   "scripts": {
     "build": "webpack --config ./webpack.config.js --mode production",
-    "dev": "webpack --config ./webpack.config.js --mode development"
+    "dev": "webpack --config ./webpack.config.js --mode development --watch"
   },
   "dependencies": {
     "dompurify": "^2.4.1",

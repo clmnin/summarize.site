@@ -1,6 +1,6 @@
-import * as DOMPurify from 'dompurify';
-import html2md from 'html-to-md'
-import CrossIC from '../../public/res/cross.svg';
+import * as DOMPurify from "dompurify";
+import html2md from "html-to-md";
+import CrossIC from "../../public/res/cross.svg";
 
 // Check given item against blacklist, return null if in blacklist
 const blacklist = ["comment"];
@@ -9,13 +9,16 @@ function checkAgainstBlacklist(elem, level) {
     const className = elem.className,
       id = elem.id;
 
-    const isBlackListed = blacklist.map(item => {
-      if ((typeof className === "string" && className.indexOf(item) >= 0)
-        || (typeof id === "string" && id.indexOf(item) >= 0)
-      ) {
-        return true;
-      }
-    }).filter(item => item)[0];
+    const isBlackListed = blacklist
+      .map((item) => {
+        if (
+          (typeof className === "string" && className.indexOf(item) >= 0) ||
+          (typeof id === "string" && id.indexOf(item) >= 0)
+        ) {
+          return true;
+        }
+      })
+      .filter((item) => item)[0];
 
     if (isBlackListed) {
       return null;
@@ -38,7 +41,11 @@ function getContainer() {
     selectedContainer = document.querySelector(contentSelector);
   } else if (document.head.querySelector("meta[name='articleBody'")) {
     selectedContainer = document.createElement("div");
-    selectedContainer.innerHTML = DOMPurify.sanitize(document.head.querySelector("meta[name='articleBody'").getAttribute("content"));
+    selectedContainer.innerHTML = DOMPurify.sanitize(
+      document.head
+        .querySelector("meta[name='articleBody'")
+        .getAttribute("content")
+    );
   } else {
     const numWordsOnPage = document.body.innerText.match(/\S+/g).length;
     let ps = document.body.querySelectorAll("p");
@@ -51,9 +58,12 @@ function getContainer() {
       ps = document.body.querySelectorAll("div");
     }
 
-    ps.forEach(p => {
-      if (checkAgainstBlacklist(p, 3) // Make sure it's not in our blacklist
-        && p.offsetHeight !== 0) { //  Make sure it's visible on the regular page
+    ps.forEach((p) => {
+      if (
+        checkAgainstBlacklist(p, 3) && // Make sure it's not in our blacklist
+        p.offsetHeight !== 0
+      ) {
+        //  Make sure it's visible on the regular page
         const myInnerText = p.innerText.match(/\S+/g);
         if (myInnerText) {
           const wordCount = myInnerText.length;
@@ -74,9 +84,11 @@ function getContainer() {
     selectedContainer = pWithMostWords;
     let wordCountSelected = highestWordCount;
 
-    while (wordCountSelected / numWordsOnPage < 0.4
-      && selectedContainer != document.body
-      && selectedContainer.parentElement.innerText) {
+    while (
+      wordCountSelected / numWordsOnPage < 0.4 &&
+      selectedContainer != document.body &&
+      selectedContainer.parentElement.innerText
+    ) {
       selectedContainer = selectedContainer.parentElement;
       wordCountSelected = selectedContainer.innerText.match(/\S+/g).length;
     }
@@ -94,9 +106,13 @@ function getContentOfArticle() {
   let pageSelectedContainer = getContainer();
 
   const pattern1 = /<a\b[^>]*>(.*?)<\/a>/gi;
-  pageSelectedContainer.innerHTML = DOMPurify.sanitize(pageSelectedContainer.innerHTML.replace(pattern1, ""));
-  const pattern2 = new RegExp("<br/?>[ \r\n\s]*<br/?>", "g");
-  pageSelectedContainer.innerHTML = DOMPurify.sanitize(pageSelectedContainer.innerHTML.replace(pattern2, "</p><p>"));
+  pageSelectedContainer.innerHTML = DOMPurify.sanitize(
+    pageSelectedContainer.innerHTML.replace(pattern1, "")
+  );
+  const pattern2 = new RegExp("<br/?>[ \r\ns]*<br/?>", "g");
+  pageSelectedContainer.innerHTML = DOMPurify.sanitize(
+    pageSelectedContainer.innerHTML.replace(pattern2, "</p><p>")
+  );
 
   let content = DOMPurify.sanitize(pageSelectedContainer.innerHTML);
   content = html2md(content);
@@ -111,18 +127,15 @@ function addStylesheet(doc, link, classN) {
   styleLink.setAttribute("type", "text/css");
   styleLink.setAttribute("href", path);
 
-  if (classN)
-    styleLink.className = classN;
+  if (classN) styleLink.className = classN;
 
   doc.head.appendChild(styleLink);
 }
 
-const ce = ({
-  props, tag, children, name,
-}, elementsObj) => {
+const ce = ({ props, tag, children, name }, elementsObj) => {
   const elm = document.createElement(tag);
   Object.entries(props).forEach(([k, v]) => {
-    if (k === 'style') {
+    if (k === "style") {
       Object.entries(v).forEach(([k2, v2]) => {
         elm.style[k2] = v2;
       });
@@ -147,57 +160,90 @@ const ce = ({
 
 function createContainer() {
   return ce({
-    tag: 'div',
-    props: { className: 'summarize-gpt-container' },
-    children: [{
-      tag: 'div',
-      props: { className: 'summarize__main-body' },
-      children: [{
-        tag: 'div',
-        props: { className: 'summarize__main-body__top-bar' },
-        children: [{
-          tag: 'div',
-          props: { className: 'summarize__main-body__top-bar__rhs' },
-          children: [{
-            tag: 'div',
-            props: { className: 'summarize__main-body__top-bar__rhs__element' },
-            children: [{
-              tag: 'div',
-              props: {
-                onclick: () => {
-                  const element = document.querySelector('.summarize-gpt-container');
-                  element.parentNode.removeChild(element);
-                },
-                className: 'summarize__main-body__top-bar__rhs__element__closeButton',
+    tag: "div",
+    props: { className: "summarize-gpt-container" },
+    children: [
+      {
+        tag: "div",
+        props: { className: "summarize__main-body" },
+        children: [
+          {
+            tag: "div",
+            props: { className: "summarize__main-body__top-bar" },
+            children: [
+              {
+                tag: "div",
+                props: { className: "summarize__main-body__top-bar__rhs" },
+                children: [
+                  {
+                    tag: "div",
+                    props: {
+                      className: "summarize__main-body__top-bar__rhs__element",
+                    },
+                    children: [
+                      {
+                        tag: "div",
+                        props: {
+                          onclick: () => {
+                            const element = document.querySelector(
+                              ".summarize-gpt-container"
+                            );
+                            element.parentNode.removeChild(element);
+                          },
+                          className:
+                            "summarize__main-body__top-bar__rhs__element__closeButton",
+                        },
+                        children: [{ tag: "img", props: { src: CrossIC } }],
+                      },
+                    ],
+                  },
+                ],
               },
-              children: [{ tag: 'img', props: { src: CrossIC }, },],
-            }]
-          }]
-        }]
-      }, {
-        tag: 'div',
-        props: { className: 'summarize__content-container' },
-        children: [{
-          tag: 'div',
-          props: { className: 'summarize__content-outer-container' },
-          children: [{
-            tag: 'div',
-            props: { className: 'summarize__content-inner-container' },
-            children: []
-          }]
-        }],
-      }]
-    }]
-  })
+            ],
+          },
+          {
+            tag: "div",
+            props: { className: "summarize__content-container" },
+            children: [
+              {
+                tag: "div",
+                props: { className: "summarize__content-outer-container" },
+                children: [
+                  {
+                    tag: "div",
+                    props: { className: "summarize__content-inner-container" },
+                    children: [],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+}
+
+function copyTextToClipboard(text) {
+  var copyButton = document.querySelector("#copy-button");
+  navigator.clipboard.writeText(text).then(function() {
+    copyButton.textContent = 'Copied';
+  }, function() {
+    copyButton.textContent = 'Failed';
+  });
 }
 
 async function run() {
-  if (!document.head.querySelector(".summarize-styles")) addStylesheet(document, "styles.css", "summarize-styles");
+  if (!document.head.querySelector(".summarize-styles"))
+    addStylesheet(document, "styles.css", "summarize-styles");
   const container = createContainer();
   document.body.appendChild(container);
 
-  const innerContainer = container.querySelector(".summarize__content-inner-container");
-  innerContainer.innerHTML = '<p class="loading">Waiting for ChatGPT response...</p>';
+  const innerContainer = container.querySelector(
+    ".summarize__content-inner-container"
+  );
+  innerContainer.innerHTML =
+    '<p class="loading">Waiting for ChatGPT response...</p>';
 
   let content;
   let selection = window.getSelection();
@@ -211,8 +257,16 @@ async function run() {
   const port = chrome.runtime.connect();
   port.onMessage.addListener(function (msg) {
     if (msg.answer) {
-      innerContainer.innerHTML = '<p><span class="prefix">Summarized </span> by <a href="https://chat.openai.com/chat" target="_blank">ChatGPT</a>:<pre></pre></p>';
+      innerContainer.innerHTML = '<p><span class="prefix">Summarized </span> by <a href="https://chat.openai.com/chat" target="_blank">ChatGPT</a><button id="copy-button"> Copy</button>:<pre id="copy-text"></pre></p>';
       innerContainer.querySelector("pre").textContent = msg.answer;
+
+      const copyButton = document.querySelector("#copy-button");
+      copyButton.addEventListener("click", function() {
+        var preElement = document.querySelector("#copy-text");
+        copyTextToClipboard(preElement.textContent);
+      });
+
+      innerContainer.scrollTop = innerContainer.scrollHeight;
     } else if (msg.error === "UNAUTHORIZED") {
       innerContainer.innerHTML =
         '<p class="prefix">Please login at <a href="https://chat.openai.com" target="_blank">chat.openai.com</a> first</p>';
@@ -221,8 +275,6 @@ async function run() {
     }
   });
   port.postMessage({ content });
-
-
 }
 
 run();

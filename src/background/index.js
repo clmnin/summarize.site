@@ -4,10 +4,15 @@ import { fetchSSE } from "./fetch-sse.js";
 
 const KEY_ACCESS_TOKEN = "accessToken";
 
-let prompt = "Rewrite this for brevity, in outline form:";
-chrome.storage.sync.get("prompt", function (items) {
+let prompt =
+  "You are acting as a summarization AI, and for the input text please summarize it to the most important 3 to 5 bullet points for brevity: ";
+let apiKey = "";
+chrome.storage.sync.get(["prompt", "apiKey"], function (items) {
   if (items && items.prompt) {
     prompt = items.prompt;
+  }
+  if (items && items.apiKey) {
+    apiKey = items.apiKey;
   }
 });
 
@@ -29,6 +34,7 @@ async function getAccessToken() {
 
 async function getSummary(question, callback) {
   const accessToken = await getAccessToken();
+  // console.log("accessToken", accessToken);
   await fetchSSE("https://chat.openai.com/backend-api/conversation", {
     method: "POST",
     headers: {
@@ -51,7 +57,7 @@ async function getSummary(question, callback) {
       parent_message_id: uuidv4(),
     }),
     onMessage(message) {
-      console.debug("sse message", message);
+      // console.debug("sse message", message);
       if (message === "[DONE]") {
         return;
       }
@@ -77,7 +83,10 @@ function executeScripts(tab) {
   chrome.action.setBadgeBackgroundColor({ color: [242, 38, 19, 230] });
   chrome.action.setBadgeText({ text: "GPT" });
 
-  chrome.scripting.executeScript({ target: { tabId }, files: ['content.bundle.js'] })
+  chrome.scripting.executeScript({
+    target: { tabId },
+    files: ["content.bundle.js"],
+  });
 
   setTimeout(function () {
     chrome.action.setBadgeText({ text: "" });
@@ -92,10 +101,24 @@ chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(async (request, sender, sendResponse) => {
     console.debug("received msg ", request.content);
     try {
-      const gptQuestion = prompt + `\n\n${request.content}`;
-      await getSummary(gptQuestion, (answer) => {
-        port.postMessage({ answer });
-      });
+      const maxLength = 3000;
+      const text = request.content;
+      const chunks = splitTextIntoChunks(text, maxLength);
+      const summaries = [];
+
+      let currentSummary = "";
+      for (const chunk of chunks) {
+        const gptQuestion = prompt + `\n\n${chunk}`;
+        let currentAnswer = "";
+        await getSummary(gptQuestion, (answer) => {
+          currentAnswer = answer;
+          port.postMessage({
+            answer: combineSummaries([currentSummary, answer]),
+          });
+        });
+        currentSummary =
+          combineSummaries([currentSummary, currentAnswer]) + "\n\n";
+      }
     } catch (err) {
       console.error(err);
       port.postMessage({ error: err.message });
@@ -103,3 +126,33 @@ chrome.runtime.onConnect.addListener((port) => {
     }
   });
 });
+
+function splitTextIntoChunks(text, maxLength) {
+  const chunks = [];
+  const words = text.split(/\s+/);
+  let currentChunk = "";
+
+  for (const word of words) {
+    if (currentChunk.length + word.length + 1 <= maxLength) {
+      currentChunk += (currentChunk ? " " : "") + word;
+    } else {
+      chunks.push(currentChunk);
+      currentChunk = word;
+    }
+  }
+
+  if (currentChunk) {
+    chunks.push(currentChunk);
+  }
+
+  return chunks;
+}
+
+function combineSummaries(summaries) {
+  let combinedSummary = "";
+  for (const summary of summaries) {
+    combinedSummary += (combinedSummary ? " " : "") + summary;
+  }
+
+  return combinedSummary;
+}
