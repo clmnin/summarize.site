@@ -191,6 +191,15 @@ function createContainer() {
   })
 }
 
+function copyTextToClipboard(text) {
+  var copyButton = document.querySelector("#copy-button");
+  navigator.clipboard.writeText(text).then(function() {
+    copyButton.textContent = 'Copied';
+  }, function() {
+    copyButton.textContent = 'Failed';
+  });
+}
+
 async function run() {
   if (!document.head.querySelector(".summarize-styles")) addStylesheet(document, "styles.css", "summarize-styles");
   const container = createContainer();
@@ -211,8 +220,14 @@ async function run() {
   const port = chrome.runtime.connect();
   port.onMessage.addListener(function (msg) {
     if (msg.answer) {
-      innerContainer.innerHTML = '<p><span class="prefix">Summarized </span> by <a href="https://chat.openai.com/chat" target="_blank">ChatGPT</a>:<pre></pre></p>';
+      innerContainer.innerHTML = '<p><span class="prefix">Summarized </span> by <a href="https://chat.openai.com/chat" target="_blank">ChatGPT</a><button id="copy-button"> Copy</button>:<pre id="copy-text"></pre></p>';
       innerContainer.querySelector("pre").textContent = msg.answer;
+
+      const copyButton = document.querySelector("#copy-button");
+      copyButton.addEventListener("click", function() {
+        var preElement = document.querySelector("#copy-text");
+        copyTextToClipboard(preElement.textContent);
+      });
     } else if (msg.error === "UNAUTHORIZED") {
       innerContainer.innerHTML =
         '<p class="prefix">Please login at <a href="https://chat.openai.com" target="_blank">chat.openai.com</a> first</p>';
