@@ -57,14 +57,18 @@ async function getSummary(question, callback) {
       parent_message_id: uuidv4(),
     }),
     onMessage(message) {
-      // console.debug("sse message", message);
       if (message === "[DONE]") {
         return;
       }
-      const data = JSON.parse(message);
-      const text = data.message?.content?.parts?.[0];
-      if (text) {
-        callback(text);
+      try {
+        const data = JSON.parse(message);
+        const text = data.message?.content?.parts?.[0];
+        if (text) {
+          callback(text);
+        }
+      } catch (err) {
+        console.log("sse message", message);
+        console.log(`Error in onMessage: ${err}`);
       }
     },
   });
