@@ -137,3 +137,10 @@
   background-color: var(--summarize-color-white);
   color: var(--summarize-color-black);
 }
+
+#copy-button {
+  position: absolute;
+  top: 15px;
+  right: 45px;
+  padding: 0;
+}
