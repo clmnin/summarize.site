@@ -265,6 +265,8 @@ async function run() {
         var preElement = document.querySelector("#copy-text");
         copyTextToClipboard(preElement.textContent);
       });
+
+      innerContainer.scrollTop = innerContainer.scrollHeight;
     } else if (msg.error === "UNAUTHORIZED") {
       innerContainer.innerHTML =
         '<p class="prefix">Please login at <a href="https://chat.openai.com" target="_blank">chat.openai.com</a> first</p>';
