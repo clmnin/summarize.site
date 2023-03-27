@@ -5,7 +5,9 @@
   "author": "Clament John <cj@hackerlab.in>",
   "scripts": {
     "build-chrome": "webpack --config ./chrome/webpack.config.js --mode production",
-    "dev-chrome": "webpack --config ./chrome/webpack.config.js --mode development --watch"
+    "dev-chrome": "webpack --config ./chrome/webpack.config.js --mode development --watch",
+    "build-firefox": "webpack --config ./firefox/webpack.config.js --mode production",
+    "dev-firefox": "webpack --config ./firefox/webpack.config.js --mode development --watch"
   },
   "dependencies": {
     "dompurify": "^2.4.1",
