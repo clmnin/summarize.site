@@ -11,7 +11,7 @@ public/res/ic/tabler/*
 
 # production
 /dist
-/build
+**/build
 
 # misc
 .DS_Store
