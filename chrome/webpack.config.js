@@ -39,14 +39,14 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: 'public/manifest.json', to: 'manifest.json' },
-        { from: 'public/res/logo-16.png', to: 'logo-16.png' },
-        { from: 'public/res/logo-32.png', to: 'logo-32.png' },
-        { from: 'public/res/logo-48.png', to: 'logo-48.png' },
-        { from: 'public/res/logo-128.png', to: 'logo-128.png' },
-        { from: 'public/styles.css', to: 'styles.css' },
-        { from: 'public/options.html', to: 'options.html' },
-        { from: 'public/options.js', to: 'options.js' },
+        { from: 'chrome/public/manifest.json', to: 'manifest.json' },
+        { from: 'chrome/public/options.html', to: 'options.html' },
+        { from: 'chrome/public/options.js', to: 'options.js' },
+        { from: 'chrome/public/styles.css', to: 'styles.css' },
+        { from: 'assets/res/logo-16.png', to: 'logo-16.png' },
+        { from: 'assets/res/logo-32.png', to: 'logo-32.png' },
+        { from: 'assets/res/logo-48.png', to: 'logo-48.png' },
+        { from: 'assets/res/logo-128.png', to: 'logo-128.png' },
       ],
     }),
     new CleanWebpackPlugin(),
