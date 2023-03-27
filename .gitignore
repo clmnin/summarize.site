@@ -25,3 +25,6 @@ yarn-debug.log*
 yarn-error.log*
 
 *.zip
+
+# .idea/
+.idea/
