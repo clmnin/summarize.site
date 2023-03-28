@@ -32,29 +32,74 @@ async function getAccessToken() {
   return resp.accessToken;
 }
 
+async function getConversationId() {
+  const accessToken = await getAccessToken();
+  const resp = await fetch(
+    "https://chat.openai.com/backend-api/conversations?offset=0&limit=1",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  )
+    .then((r) => r.json())
+    .catch(() => ({}));
+  if (resp?.items?.length === 1) {
+    return resp.items[0].id;
+  }
+  return "";
+}
+
+async function deleteConversation(conversationId) {
+  const accessToken = await getAccessToken();
+  const resp = await fetch(
+    `https://chat.openai.com/backend-api/conversation/${conversationId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ is_visible: false }),
+    }
+  )
+    .then((r) => r.json())
+    .catch(() => ({}));
+  if (resp?.success) {
+    return true;
+  }
+  return false;
+}
+
 async function getSummary(question, callback) {
   const accessToken = await getAccessToken();
+  const messageJson = {
+    action: "next",
+    messages: [
+      {
+        id: uuidv4(),
+        author: {
+          role: "user",
+        },
+        role: "user",
+        content: {
+          content_type: "text",
+          parts: [question],
+        },
+      },
+    ],
+    model: "text-davinci-002-render",
+    parent_message_id: uuidv4(),
+  };
   await fetchSSE("https://chat.openai.com/backend-api/conversation", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({
-      action: "next",
-      messages: [
-        {
-          id: uuidv4(),
-          role: "user",
-          content: {
-            content_type: "text",
-            parts: [question],
-          },
-        },
-      ],
-      model: "text-davinci-002-render",
-      parent_message_id: uuidv4(),
-    }),
+    body: JSON.stringify(messageJson),
     onMessage(message) {
       if (message === "[DONE]") {
         return;
@@ -130,6 +175,7 @@ browser.runtime.onConnect.addListener((port) => {
             answer: combineSummaries([currentSummary, answer]),
           });
         });
+        await deleteConversation(await getConversationId());
         currentSummary =
           combineSummaries([currentSummary, currentAnswer]) + "\n\n";
       }
