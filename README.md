@@ -2,7 +2,7 @@
 
 Browser Extension to summarize web page content using ChatGPT, support Chrome (more on the way!)
 
-[![Watch the video](./public/screenshot.png)](https://www.youtube.com/watch?v=87IiZSrF9HI)
+[![Watch the video](./assets/screenshot.png)](https://www.youtube.com/watch?v=87IiZSrF9HI)
 
 ## Installation
 
@@ -23,9 +23,18 @@ https://chrome.google.com/webstore/detail/summarize/lmhkmibdclhibdooglianggbnhcb
 
 ## Build from source
 
+### Chrome
+
 1. Clone the repo
 2. Install dependencies with `yarn`
-3. Run `yarn dev`
+3. Run `yarn run dev-chrome`
+4. Load the `build` directory to your browser
+
+### Firefox
+
+1. Clone the repo
+2. Install dependencies with `yarn`
+3. Run `yarn run dev-firefox`
 4. Load the `build` directory to your browser
 
 ## FAQ

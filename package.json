@@ -4,8 +4,10 @@
   "description": "Summarize any article using OpenAI's ChatGPT",
   "author": "Clament John <cj@hackerlab.in>",
   "scripts": {
-    "build": "webpack --config ./webpack.config.js --mode production",
-    "dev": "webpack --config ./webpack.config.js --mode development --watch"
+    "build-chrome": "webpack --config ./chrome/webpack.config.js --mode production",
+    "dev-chrome": "webpack --config ./chrome/webpack.config.js --mode development --watch",
+    "build-firefox": "webpack --config ./firefox/webpack.config.js --mode production",
+    "dev-firefox": "webpack --config ./firefox/webpack.config.js --mode development --watch"
   },
   "dependencies": {
     "dompurify": "^2.4.1",

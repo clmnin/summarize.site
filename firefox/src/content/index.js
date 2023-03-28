@@ -1,6 +1,6 @@
 import * as DOMPurify from "dompurify";
 import html2md from "html-to-md";
-import CrossIC from "../../public/res/cross.svg";
+import CrossIC from "../../../assets/res/cross.svg";
 
 // Check given item against blacklist, return null if in blacklist
 const blacklist = ["comment"];
@@ -86,7 +86,7 @@ function getContainer() {
 
     while (
       wordCountSelected / numWordsOnPage < 0.4 &&
-      selectedContainer != document.body &&
+      selectedContainer !== document.body &&
       selectedContainer.parentElement.innerText
     ) {
       selectedContainer = selectedContainer.parentElement;
@@ -120,7 +120,7 @@ function getContentOfArticle() {
 }
 
 function addStylesheet(doc, link, classN) {
-  const path = chrome.runtime.getURL(link),
+  const path = browser.runtime.getURL(link),
     styleLink = document.createElement("link");
 
   styleLink.setAttribute("rel", "stylesheet");
@@ -254,7 +254,7 @@ async function run() {
     content = selection.toString();
   }
 
-  const port = chrome.runtime.connect();
+  const port = browser.runtime.connect();
   port.onMessage.addListener(function (msg) {
     if (msg.answer) {
       innerContainer.innerHTML = '<p><span class="prefix">Summarized </span> by <a href="https://chat.openai.com/chat" target="_blank">ChatGPT</a><button id="copy-button"> Copy</button>:<pre id="copy-text"></pre></p>';
