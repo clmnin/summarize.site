@@ -34,7 +34,6 @@ async function getAccessToken() {
 
 async function getSummary(question, callback) {
   const accessToken = await getAccessToken();
-  // console.log("accessToken", accessToken);
   await fetchSSE("https://chat.openai.com/backend-api/conversation", {
     method: "POST",
     headers: {
@@ -70,6 +69,9 @@ async function getSummary(question, callback) {
         console.log("sse message", message);
         console.log(`Error in onMessage: ${err}`);
       }
+    },
+    onError(err) {
+      console.log(`Error in fetchSSE: ${err}`);
     },
   });
 }

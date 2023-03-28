@@ -2,8 +2,8 @@ import { createParser } from "eventsource-parser";
 import { streamAsyncIterable } from "./stream-async-iterable.js";
 
 export async function fetchSSE(resource, options) {
-  const { onMessage, ...fetchOptions } = options;
-  const resp = await fetch(resource, fetchOptions);
+  const { onMessage, onError, ...fetchOptions } = options;
+  const resp = await fetch(resource, fetchOptions).catch((err) => onError(err));
   const parser = createParser((event) => {
     if (event.type === "event") {
       onMessage(event.data);
