@@ -3,7 +3,7 @@ const defaultPrompt =
 const defaultAPIKey = "";
 
 browser.storage.sync.get("prompt", function (items) {
-  if (items.prompt) {
+  if (items && items.prompt) {
     document.getElementById("prompt").value = items.prompt;
   } else {
     document.getElementById("prompt").value = defaultPrompt;
@@ -11,7 +11,7 @@ browser.storage.sync.get("prompt", function (items) {
 });
 
 browser.storage.sync.get("apiKey", function (items) {
-  if (items.apiKey) {
+  if (items && items.apiKey) {
     document.getElementById("apiKey").value = items.apiKey;
   } else {
     document.getElementById("apiKey").value = defaultAPIKey;
@@ -23,7 +23,9 @@ browser.storage.sync.get(
     prompt: defaultPrompt,
   },
   function (items) {
-    document.getElementById("prompt").value = items.prompt;
+    if (items) {
+      document.getElementById("prompt").value = items.prompt;
+    }
   }
 );
 
@@ -32,7 +34,9 @@ browser.storage.sync.get(
     apiKey: defaultAPIKey,
   },
   function (items) {
-    document.getElementById("apiKey").value = items.apiKey;
+    if (items) {
+      document.getElementById("apiKey").value = items.apiKey;
+    }
   }
 );
 
