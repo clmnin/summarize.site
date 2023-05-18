@@ -31,16 +31,6 @@
   padding: 0px 15px;
   border-bottom: 1px solid var(--summarize-color-divider);
 }
-/* .topBar_lhs {
-  all: initial;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 8px;
-} */
 .summarize__main-body__top-bar__rhs {
   display: flex;
   align-items: center;
