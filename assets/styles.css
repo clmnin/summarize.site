@@ -105,7 +105,6 @@
   position: relative;
   font-family: "IBM Plex Sans", sans-serif !important;
   padding: 16px 24px 6px;
-  transition: min-height 0.3s ease 0s;
 }
 
 .summarize__content-inner-container .prefix {
