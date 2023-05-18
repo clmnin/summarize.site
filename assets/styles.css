@@ -1,13 +1,14 @@
 :root {
-  --summarize-color-white:  #fff;
-  --summarize-color-gray-2:  #fafafa;
-  --summarize-color-divider:  #eeeeee;
-  --summarize-color-black:  #222;
+  --summarize-color-white: #fff;
+  --summarize-color-gray-2: #fafafa;
+  --summarize-color-divider: #eeeeee;
+  --summarize-color-black: #222;
 }
 
 .summarize__main-body {
   background-color: var(--summarize-color-white);
-  box-shadow: rgba(0, 0, 0, 0.05) -3px 9px 28px 8px, rgba(0, 0, 0, 0.08) -3px 6px 16px, rgba(0, 0, 0, 0.12) -1px 3px 6px -4px;
+  box-shadow: rgba(0, 0, 0, 0.05) -3px 9px 28px 8px,
+    rgba(0, 0, 0, 0.08) -3px 6px 16px, rgba(0, 0, 0, 0.12) -1px 3px 6px -4px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -110,7 +111,7 @@
 .summarize__content-inner-container .prefix {
   font-weight: bold;
   background-color: var(--summarize-color-white);
-  color: var(--summarize-color-black)
+  color: var(--summarize-color-black);
 }
 
 .summarize__content-inner-container .loading {
