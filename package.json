@@ -4,10 +4,11 @@
   "description": "Summarize any article using OpenAI's ChatGPT",
   "author": "Clament John <cj@hackerlab.in>",
   "scripts": {
-    "build-chrome": "webpack --config ./chrome/webpack.config.js --mode production",
-    "dev-chrome": "webpack --config ./chrome/webpack.config.js --mode development --watch",
-    "build-firefox": "webpack --config ./firefox/webpack.config.js --mode production",
-    "dev-firefox": "webpack --config ./firefox/webpack.config.js --mode development --watch"
+    "tailwind": "npx tailwindcss -i ./assets/styles.css -o ./assets/output.css",
+    "build-chrome": "npm run tailwind && webpack --config ./chrome/webpack.config.js --mode production",
+    "dev-chrome": "npm run tailwind && webpack --config ./chrome/webpack.config.js --mode development --watch",
+    "build-firefox": "npm run tailwind && webpack --config ./firefox/webpack.config.js --mode production",
+    "dev-firefox": "npm run tailwind && webpack --config ./firefox/webpack.config.js --mode development --watch"
   },
   "dependencies": {
     "dompurify": "^2.4.1",
@@ -21,13 +22,17 @@
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "autoprefixer": "^10.4.14",
     "babel-loader": "^8.2.5",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^10.2.4",
+    "css-loader": "^6.7.1",
+    "postcss": "^8.4.23",
+    "postcss-loader": "^7.3.0",
+    "tailwindcss": "^3.3.2",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1",
-    "webpack-merge": "^5.7.3",
-    "css-loader": "^6.7.1"
+    "webpack-merge": "^5.7.3"
   }
 }

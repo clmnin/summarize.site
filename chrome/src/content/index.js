@@ -134,6 +134,9 @@ function addStylesheet(doc, link, classN) {
   const style = document.createElement("style");
   style.textContent = `
     :host {
+      all: initial;
+      display: block;
+      font-size: 16px;
       --summarize-color-white: #fff;
       --summarize-color-gray-2: #fafafa;
       --summarize-color-divider: #eeeeee;
@@ -141,6 +144,15 @@ function addStylesheet(doc, link, classN) {
     }
   `;
   doc.appendChild(style);
+}
+
+function copyTextToClipboard(text) {
+  var copyButton = document.querySelector("#copy-button");
+  navigator.clipboard.writeText(text).then(function () {
+    copyButton.textContent = 'Copied';
+  }, function () {
+    copyButton.textContent = 'Failed';
+  });
 }
 
 const ce = ({ props, tag, children, name }, elementsObj) => {
@@ -176,79 +188,33 @@ function createContainer() {
     children: [
       {
         tag: "div",
-        props: { className: "summarize__main-body" },
+        props: { className: "min-h-lg min-w-sm duration-400 fixed right-4 top-8 z-50 flex max-h-lg max-w-sm flex-col items-center justify-center rounded-lg bg-white shadow-md transition-all ease-in-out" },
         children: [
           {
             tag: "div",
-            props: { className: "summarize__main-body__top-bar" },
+            props: { className: "flex h-12 w-full items-center justify-between rounded-t-lg bg-gray-200 px-4" },
             children: [
               {
                 tag: "div",
-                props: { className: "summarize__main-body__top-bar__rhs" },
-                children: [
-                  {
-                    tag: "div",
-                    props: {
-                      className: "summarize__main-body__top-bar__rhs__element",
-                    },
-                    children: [
-                      {
-                        tag: "div",
-                        props: {
-                          onclick: () => {
-                            const element = document.querySelector(
-                              ".summarize-gpt-container"
-                            );
-                            element.parentNode.removeChild(element);
-                          },
-                          className:
-                            "summarize__main-body__top-bar__rhs__element__closeButton",
-                        },
-                        children: [{ tag: "img", props: { src: CrossIC } }],
-                      },
-                    ],
-                  },
-                ],
+                props: { id: "summarize__heading-text", className: "text-5-xl font-bold text-black" },
               },
+              { tag: "img", props: { id: "summarize__close-button", className: "h-6 w-6 cursor-pointer", src: CrossIC, alt: "close" } }
             ],
           },
+          { tag: "div", props: { className: "w-full h-1 bg-gray-300" } },
           {
             tag: "div",
-            props: { className: "summarize__content-container" },
+            props: { className: "w-full h-full px-4 py-4 overflow-y-auto" },
             children: [
               {
                 tag: "div",
-                props: { className: "summarize__content-outer-container" },
-                children: [
-                  {
-                    tag: "div",
-                    props: { className: "summarize__content-inner-container" },
-                    children: [],
-                  },
-                ],
+                props: { id: "summarize__body", className: "flex flex-col text-3-xl text-gray-700 mb-2 whitespace-pre-line" },
               },
             ],
-          },
-          {
-            tag: "button",
-            props: {
-              onclick: () => window.open('https://tally.so/r/woD2eP', "_blank"),
-              className: "summarize__feedback-button",
-              innerText: "Help us innovate. Share a feedback"
-            },
-          },
+          }
         ],
       },
     ],
-  });
-}
-
-function copyTextToClipboard(text) {
-  var copyButton = document.querySelector("#copy-button");
-  navigator.clipboard.writeText(text).then(function () {
-    copyButton.textContent = 'Copied';
-  }, function () {
-    copyButton.textContent = 'Failed';
   });
 }
 
@@ -273,11 +239,16 @@ async function run() {
   root.style.right = '10px';
   root.style.zIndex = '9999'; // Make sure it's on top of other elements
 
-  const innerContainer = container.querySelector(
-    ".summarize__content-inner-container"
-  );
-  innerContainer.innerHTML =
-    '<p class="loading">Waiting for ChatGPT response...</p>';
+  const innerContainerHeading = container.querySelector("#summarize__heading-text");
+  innerContainerHeading.innerHTML = '<p>Summarized by <a href="https://chat.openai.com/chat" target="_blank">ChatGPT</a></p>';
+
+  const innerContainerBody = container.querySelector("#summarize__body");
+  innerContainerBody.innerHTML = '<p>Waiting for ChatGPT response...</p>';
+
+  const closeButton = container.querySelector("#summarize__close-button");
+  closeButton.addEventListener("click", function () {
+    document.body.removeChild(root);
+  });
 
   let content;
   let selection = window.getSelection();
@@ -291,24 +262,16 @@ async function run() {
   const port = chrome.runtime.connect();
   port.onMessage.addListener(function (msg) {
     if (msg.answer) {
-      innerContainer.innerHTML = '<p><span class="prefix">Summarized </span> by <a href="https://chat.openai.com/chat" target="_blank">ChatGPT</a><button id="copy-button"> Copy</button>:<pre id="copy-text"></pre></p>';
-      innerContainer.querySelector("pre").textContent = msg.answer;
-
-      const copyButton = container.querySelector("#copy-button");
-      copyButton.addEventListener("click", function () {
-        var preElement = container.querySelector("#copy-text");
-        copyTextToClipboard(preElement.textContent);
-      });
-
-      innerContainer.scrollTop = innerContainer.scrollHeight;
+      innerContainerBody.innerHTML = msg.answer;
     } else if (msg.error === "UNAUTHORIZED") {
-      innerContainer.innerHTML =
-        '<p class="prefix">Please login at <a href="https://chat.openai.com" target="_blank">chat.openai.com</a> first</p>';
+      innerContainerBody.innerHTML =
+        '<p>Please login at <a href="https://chat.openai.com" target="_blank">chat.openai.com</a></p>';
     } else {
-      innerContainer.innerHTML = "<p>Failed to load response from ChatGPT</p>";
+      innerContainerBody.innerHTML = "<p>Failed to load response from ChatGPT</p>";
     }
   });
   port.postMessage({ content });
+
 }
 
 run();
