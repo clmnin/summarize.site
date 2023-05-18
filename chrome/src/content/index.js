@@ -218,6 +218,14 @@ function createContainer() {
               },
             ],
           },
+          {
+            tag: "button",
+            props: {
+              onclick: () => window.open('https://tally.so/r/woD2eP', "_blank"),
+              className: "summarize__feedback-button",
+              innerText: "Help us improve. Give a feedback"
+            },
+          },
         ],
       },
     ],
@@ -226,9 +234,9 @@ function createContainer() {
 
 function copyTextToClipboard(text) {
   var copyButton = document.querySelector("#copy-button");
-  navigator.clipboard.writeText(text).then(function() {
+  navigator.clipboard.writeText(text).then(function () {
     copyButton.textContent = 'Copied';
-  }, function() {
+  }, function () {
     copyButton.textContent = 'Failed';
   });
 }
@@ -261,7 +269,7 @@ async function run() {
       innerContainer.querySelector("pre").textContent = msg.answer;
 
       const copyButton = document.querySelector("#copy-button");
-      copyButton.addEventListener("click", function() {
+      copyButton.addEventListener("click", function () {
         var preElement = document.querySelector("#copy-text");
         copyTextToClipboard(preElement.textContent);
       });

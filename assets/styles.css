@@ -144,3 +144,17 @@
   right: 45px;
   padding: 0;
 }
+
+.summarize__feedback-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #ff6b81;
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
