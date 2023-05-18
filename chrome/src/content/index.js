@@ -129,7 +129,18 @@ function addStylesheet(doc, link, classN) {
 
   if (classN) styleLink.className = classN;
 
-  doc.head.appendChild(styleLink);
+  doc.appendChild(styleLink);
+
+  const style = document.createElement("style");
+  style.textContent = `
+    :host {
+      --summarize-color-white: #fff;
+      --summarize-color-gray-2: #fafafa;
+      --summarize-color-divider: #eeeeee;
+      --summarize-color-black: #222;
+    }
+  `;
+  doc.appendChild(style);
 }
 
 const ce = ({ props, tag, children, name }, elementsObj) => {
@@ -223,7 +234,7 @@ function createContainer() {
             props: {
               onclick: () => window.open('https://tally.so/r/woD2eP', "_blank"),
               className: "summarize__feedback-button",
-              innerText: "Help us improve. Give a feedback"
+              innerText: "Help us innovate. Share a feedback"
             },
           },
         ],
@@ -242,10 +253,25 @@ function copyTextToClipboard(text) {
 }
 
 async function run() {
-  if (!document.head.querySelector(".summarize-styles"))
-    addStylesheet(document, "styles.css", "summarize-styles");
   const container = createContainer();
-  document.body.appendChild(container);
+
+  let root = document.createElement('div');
+  root.id = "summarize-root";
+  document.body.appendChild(root);
+
+  let shadowRoot = root.attachShadow({ mode: 'open' });
+
+  // Appending the styles to the shadow root
+  if (!shadowRoot.querySelector(".summarize-styles"))
+    addStylesheet(shadowRoot, "styles.css", "summarize-styles");
+
+  shadowRoot.appendChild(container);
+
+  // Adding styles to position the root
+  root.style.position = 'fixed';
+  root.style.top = '10px';
+  root.style.right = '10px';
+  root.style.zIndex = '9999'; // Make sure it's on top of other elements
 
   const innerContainer = container.querySelector(
     ".summarize__content-inner-container"
@@ -268,9 +294,9 @@ async function run() {
       innerContainer.innerHTML = '<p><span class="prefix">Summarized </span> by <a href="https://chat.openai.com/chat" target="_blank">ChatGPT</a><button id="copy-button"> Copy</button>:<pre id="copy-text"></pre></p>';
       innerContainer.querySelector("pre").textContent = msg.answer;
 
-      const copyButton = document.querySelector("#copy-button");
+      const copyButton = container.querySelector("#copy-button");
       copyButton.addEventListener("click", function () {
-        var preElement = document.querySelector("#copy-text");
+        var preElement = container.querySelector("#copy-text");
         copyTextToClipboard(preElement.textContent);
       });
 
