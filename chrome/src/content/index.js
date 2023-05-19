@@ -240,7 +240,7 @@ function createContainer() {
     children: [
       {
         tag: "div",
-        props: { className: "sumz-min-w-[50%] sumz-max-h-[80%] sumz-max-w-[50%] sumz-fixed sumz-right-4 sumz-top-8 sumz-flex sumz-flex-col sumz-items-center sumz-justify-center sumz-rounded-lg sumz-bg-white sumz-shadow-md" },
+        props: { className: "sumz-min-w-[30%] sumz-max-h-[80%] sumz-max-w-[30%] sumz-fixed sumz-right-4 sumz-top-8 sumz-flex sumz-flex-col sumz-items-center sumz-justify-center sumz-rounded-lg sumz-bg-white sumz-shadow-md" },
         children: [
           // heading
           {
@@ -289,6 +289,7 @@ function createContainer() {
                     tag: "button",
                     props: {
                       id: "summarize__animation-button",
+                      onclick: () => window.open('https://tally.so/r/woD2eP', "_blank"),
                       className: "sumz-rounded-full sumz-border-2 sumz-border-sky-600 sumz-m-2 sumz-px-1 sumz-py-1 sumz-text-lg sumz-text-sky-600 sumz-transition-colors hover:sumz-bg-sky-100",
                     },
                     children: [
