@@ -2,6 +2,59 @@ import * as DOMPurify from "dompurify";
 import html2md from "html-to-md";
 import CrossIC from "../../../assets/res/cross.svg";
 
+const randomNumberBetween = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+const onAnimationButtonClick = (container, sparklesCount) => {
+  // Letter animation
+  container.querySelectorAll('.summarize__animated-letter').forEach((el, i) => {
+    el.animate([
+      { transform: 'translateY(0px)' },
+      { transform: 'translateY(-16px)' },
+    ], {
+      duration: 200,
+      delay: i * 50,
+      fill: 'forwards'
+    });
+  });
+
+  // Sparkle animation
+  for (let i = 0; i < sparklesCount; i++) {
+    const sparkle = container.querySelector(`.sparkle-${i}`);
+    sparkle.animate([
+      { transform: 'translate(0px, 0px)', opacity: 0 },
+      { transform: `translate(${randomNumberBetween(-100, 100)}px, ${randomNumberBetween(-100, 100)}px)`, opacity: 1 },
+    ], {
+      duration: 500,
+      easing: 'ease-out',
+      fill: 'forwards'
+    });
+
+    // Add fade-out animation after the previous animation
+    sparkle.animate([
+      { opacity: 1 },
+      { opacity: 0 }
+    ], {
+      delay: 500, // Delay the start of the fade-out animation by the duration of the previous animation
+      duration: 500, // Set the duration for the fade-out animation
+      easing: 'ease-in',
+      fill: 'forwards'
+    });
+  }
+
+  // Button scaling animation
+  const button = container.querySelector('#summarize__animation-button');
+  button.animate([
+    { transform: 'scale(1)' },
+    { transform: 'scale(0.8)' },
+    { transform: 'scale(1)' }
+  ], {
+    duration: 200,
+    fill: 'forwards'
+  });
+};
+
 // Check given item against blacklist, return null if in blacklist
 const blacklist = ["comment"];
 function checkAgainstBlacklist(elem, level) {
@@ -135,12 +188,11 @@ function addStylesheet(doc, link, classN) {
   style.textContent = `
     :host {
       all: initial;
-      display: block;
+    }
+    .summarize-gpt-container * {
+      font-family: sans-serif;
+      line-height: normal;
       font-size: 16px;
-      --summarize-color-white: #fff;
-      --summarize-color-gray-2: #fafafa;
-      --summarize-color-divider: #eeeeee;
-      --summarize-color-black: #222;
     }
   `;
   doc.appendChild(style);
@@ -188,28 +240,83 @@ function createContainer() {
     children: [
       {
         tag: "div",
-        props: { className: "min-h-lg min-w-sm duration-400 fixed right-4 top-8 z-50 flex max-h-lg max-w-sm flex-col items-center justify-center rounded-lg bg-white shadow-md transition-all ease-in-out" },
+        props: { className: "sumz-min-w-[50%] sumz-max-h-[80%] sumz-max-w-[50%] sumz-fixed sumz-right-4 sumz-top-8 sumz-flex sumz-flex-col sumz-items-center sumz-justify-center sumz-rounded-lg sumz-bg-white sumz-shadow-md" },
         children: [
+          // heading
           {
             tag: "div",
-            props: { className: "flex h-12 w-full items-center justify-between rounded-t-lg bg-gray-200 px-4" },
+            props: { className: "sumz-flex sumz-h-[40px] sumz-w-full sumz-items-center sumz-justify-between sumz-rounded-t-lg sumz-bg-gray-200 sumz-px-4" },
             children: [
               {
                 tag: "div",
-                props: { id: "summarize__heading-text", className: "text-5-xl font-bold text-black" },
+                props: { id: "summarize__heading-text", className: "sumz-text-xl sumz-font-black sumz-animate-text sumz-bg-gradient-to-r sumz-from-teal-500 sumz-via-purple-500 sumz-to-orange-500 sumz-bg-clip-text sumz-text-transparent" },
               },
-              { tag: "img", props: { id: "summarize__close-button", className: "h-6 w-6 cursor-pointer", src: CrossIC, alt: "close" } }
+              { tag: "img", props: { id: "summarize__close-button", className: "sumz-h-[24px] sumz-w-6 sumz-cursor-pointer sumz-rounded-lg hover:sumz-bg-sky-200", src: CrossIC, alt: "close" } }
             ],
           },
-          { tag: "div", props: { className: "w-full h-1 bg-gray-300" } },
+          // divider
+          { tag: "div", props: { className: "sumz-w-full sumz-h-1 sumz-bg-gray-300" } },
+          // body
           {
             tag: "div",
-            props: { className: "w-full h-full px-4 py-4 overflow-y-auto" },
+            props: { className: "sumz-h-full sumz-w-full sumz-overflow-y-auto sumz-px-4 sumz-py-4" },
             children: [
               {
                 tag: "div",
-                props: { id: "summarize__body", className: "flex flex-col text-3-xl text-gray-700 mb-2 whitespace-pre-line" },
+                props: { id: "summarize__body", className: "sumz-text-3-xl sumz-mb-2 sumz-flex sumz-flex-col sumz-whitespace-pre-line sumz-text-gray-700" },
               },
+            ],
+          },
+          // divider
+          { tag: "div", props: { className: "sumz-w-full sumz-h-1 sumz-bg-gray-200" } },
+          // footer
+          {
+            tag: "div",
+            props: { className: "sumz-m-2" },
+            children: [
+              {
+                tag: "div",
+                props: { className: "sumz-flex sumz-h-[32px] sumz-w-full sumz-items-center sumz-justify-center" },
+                children: [
+                  {
+                    tag: "div",
+                    props: {
+                      className: "sumz-text-lg sumz-font-bold sumz-text-gray-600",
+                      innerText: "Help Us"
+                    },
+                  },
+                  {
+                    tag: "button",
+                    props: {
+                      id: "summarize__animation-button",
+                      className: "sumz-rounded-full sumz-border-2 sumz-border-sky-600 sumz-m-2 sumz-px-1 sumz-py-1 sumz-text-lg sumz-text-sky-600 sumz-transition-colors hover:sumz-bg-sky-100",
+                    },
+                    children: [
+                      {
+                        tag: "span",
+                        props: {
+                          className: "sumz-pointer-events-none sumz-absolute sumz-inset-0 -sumz-z-10 sumz-block",
+                          id: "summarize__sparkles-container"
+                        },
+                      },
+                      {
+                        tag: "span",
+                        props: {
+                          className: "sumz-block sumz-h-[16px] sumz-overflow-hidden sumz-z-10",
+                          id: "summarize__letters-container"
+                        },
+                      },
+                    ],
+                  }
+                ],
+              },
+              {
+                tag: "div",
+                props: {
+                  className: "sumz-text-sm sumz-text-gray-600 sumz-pt-2",
+                  innerText: "Share Your Feedback & Ideas for Summarize and Beyond"
+                }
+              }
             ],
           }
         ],
@@ -235,12 +342,10 @@ async function run() {
 
   // Adding styles to position the root
   root.style.position = 'fixed';
-  root.style.top = '10px';
-  root.style.right = '10px';
   root.style.zIndex = '9999'; // Make sure it's on top of other elements
 
   const innerContainerHeading = container.querySelector("#summarize__heading-text");
-  innerContainerHeading.innerHTML = '<p>Summarized by <a href="https://chat.openai.com/chat" target="_blank">ChatGPT</a></p>';
+  innerContainerHeading.innerHTML = '<p>Summarized <a href="https://chat.openai.com/chat" target="_blank" class="sumz-text-sm">by ChatGPT</a></p>';
 
   const innerContainerBody = container.querySelector("#summarize__body");
   innerContainerBody.innerHTML = '<p>Waiting for ChatGPT response...</p>';
@@ -248,6 +353,43 @@ async function run() {
   const closeButton = container.querySelector("#summarize__close-button");
   closeButton.addEventListener("click", function () {
     document.body.removeChild(root);
+  });
+
+  // animated button
+  const letters = ["I", "n", "n", "o", "v", "a", "t", "e"];
+  const lettersContainer = container.querySelector("#summarize__letters-container");
+
+  // Add letters dynamically
+  letters.forEach((letter, index) => {
+    const letterSpan = document.createElement("span");
+    letterSpan.setAttribute("data-letter", letter);
+    letterSpan.className = "summarize__animated-letter sumz-relative sumz-inline-block sumz-h-[16px] sumz-leading-[16px] after:sumz-absolute after:sumz-left-0 after:sumz-top-full after:sumz-h-[16px] after:sumz-content-[attr(data-letter)]";
+    letterSpan.textContent = letter;
+    lettersContainer.appendChild(letterSpan);
+  });
+  // Add sparkles dynamically
+  const sparklesCount = 10;
+  const sparklesContainer = container.querySelector("#summarize__sparkles-container");
+  const sparkleCssClass = Array('sumz-fill-sky-600', 'sumz-fill-emerald-600', 'sumz-fill-indigo-600', 'sumz-fill-rose-600', 'sumz-fill-amber-600');
+
+  for (let i = 0; i < sparklesCount; i++) {
+    const sparkleSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    sparkleSvg.classList.add(`sumz-absolute`, `sumz-left-1/2`, `sumz-top-1/2`, `sumz-opacity-0`, `sparkle-${i}`);
+    sparkleSvg.setAttribute("viewBox", "0 0 122 117");
+    const dimention = randomNumberBetween(10, 16);
+    sparkleSvg.setAttribute("width", `${dimention}`);
+    sparkleSvg.setAttribute("height", `${dimention}`);
+
+    const sparklePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    const sprinkleColor = sparkleCssClass[Math.floor(Math.random() * sparkleCssClass.length)];
+    sparkleSvg.classList.add(sprinkleColor);
+    sparklePath.setAttribute("d", "M64.39,2,80.11,38.76,120,42.33a3.2,3.2,0,0,1,1.83,5.59h0L91.64,74.25l8.92,39a3.2,3.2,0,0,1-4.87,3.4L61.44,96.19,27.09,116.73a3.2,3.2,0,0,1-4.76-3.46h0l8.92-39L1.09,47.92A3.2,3.2,0,0,1,3,42.32l39.74-3.56L58.49,2a3.2,3.2,0,0,1,5.9,0Z");
+
+    sparkleSvg.appendChild(sparklePath);
+    sparklesContainer.appendChild(sparkleSvg);
+  }
+  lettersContainer.addEventListener("mouseenter", function () {
+    onAnimationButtonClick(container, sparklesCount);
   });
 
   let content;
@@ -271,7 +413,6 @@ async function run() {
     }
   });
   port.postMessage({ content });
-
 }
 
 run();
