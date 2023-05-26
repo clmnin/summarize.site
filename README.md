@@ -8,10 +8,6 @@ Browser Extension to summarize web page content using ChatGPT, support Chrome (m
 
 ### Install to Chrome/Edge
 
-#### Install from Chrome Web Store
-
-https://chrome.google.com/webstore/detail/summarize/lmhkmibdclhibdooglianggbnhcbcjeh
-
 
 #### Local Install
 
