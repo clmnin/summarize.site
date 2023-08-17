@@ -1,14 +1,14 @@
 {
   "name": "summarize-gpt",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "Summarize any article using OpenAI's ChatGPT",
   "author": "Clament John <cj@hackerlab.in>",
   "scripts": {
     "tailwind": "npx tailwindcss -i ./assets/styles.css -o ./assets/output.css",
-    "build-chrome": "npm run tailwind && webpack --config ./chrome/webpack.config.js --mode production",
-    "dev-chrome": "npm run tailwind && webpack --config ./chrome/webpack.config.js --mode development --watch",
-    "build-firefox": "npm run tailwind && webpack --config ./firefox/webpack.config.js --mode production",
-    "dev-firefox": "npm run tailwind && webpack --config ./firefox/webpack.config.js --mode development --watch"
+    "build-chrome": "npm run tailwind && webpack --config ./lib/webpack.chrome.config.js --mode production",
+    "dev-chrome": "npm run tailwind && webpack --config ./lib/webpack.chrome.config.js --mode development --watch",
+    "build-firefox": "npm run tailwind && webpack --config ./lib/webpack.firefox.config.js --mode production",
+    "dev-firefox": "npm run tailwind && webpack --config ./lib/webpack.firefox.config.js --mode development --watch"
   },
   "dependencies": {
     "dompurify": "^2.4.1",
