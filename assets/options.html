@@ -22,7 +22,7 @@
         margin-left: 10px;
       }
 
-      input[type="text"] {
+      input[type="text"], select {
         width: 80%;
         padding: 10px;
         margin-top: 10px;
@@ -66,6 +66,12 @@
       <input type="text" id="prompt" size="40" value="" />
       <label for="apiKey">OpenAI API Key:</label>
       <input type="text" id="apiKey" size="40" value="" />
+      <!-- select prompts -->
+      <label for="promptSelect">Select a prompt:</label>
+      <select name="promptSelect" id="promptSelect">
+        <option value="default">default</option>
+        <option value="Traditional Chinese">Tranditional Chinese</option>
+      </select>
       <br />
       <button id="saveButton">Save</button>
       <button id="resetButton">Reset</button>
