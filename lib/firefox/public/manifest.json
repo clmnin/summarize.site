@@ -8,8 +8,7 @@
   "permissions": [
     "scripting",
     "activeTab",
-    "storage",
-    "clipboardWrite"
+    "storage"
   ],
   "options_ui": {
     "page": "options.html",
