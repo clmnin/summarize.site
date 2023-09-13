@@ -1,5 +1,8 @@
 # Summarize
 
+[![Edge Addons Store badge](./assets/marketing/edge-add-on.svg)](https://microsoftedge.microsoft.com/addons/detail/summarize/kccfhiebopgfmoaceieligogmgemjgen)
+[![Chrome Web Store badge](./assets/marketing/chrome-web-store.png)](https://chrome.google.com/webstore/detail/summarize/kjbpaokegiilajekbohjipdkojgekfij)
+
 Browser Extension to summarize web page content using ChatGPT, support Chrome (more on the way!)
 
 [![Watch the video](./assets/screenshot.png)](https://www.youtube.com/watch?v=yrkXIOFebks)
@@ -24,13 +27,6 @@ Browser Extension to summarize web page content using ChatGPT, support Chrome (m
 1. Clone the repo
 2. Install dependencies with `yarn`
 3. Run `yarn run dev-chrome`
-4. Load the `build` directory to your browser
-
-### Firefox
-
-1. Clone the repo
-2. Install dependencies with `yarn`
-3. Run `yarn run dev-firefox`
 4. Load the `build` directory to your browser
 
 ## FAQ
